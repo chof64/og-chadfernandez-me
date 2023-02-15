@@ -4,4 +4,4 @@
 
 ## License
 
-**chof64/chadfernandez-me** is licensed under the GNU General Public License v3.0.
+**chof64/og-chadfernandez-me** is licensed under the GNU General Public License v3.0.
