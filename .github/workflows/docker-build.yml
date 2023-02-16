@@ -24,9 +24,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set tag name
+        id: tag
+        run: |
+          if [ ${{ github.ref }} = 'refs/heads/main' ]; then
+            echo "::set-output name=tag::latest"
+          else
+            echo "::set-output name=tag::${{ github.ref/refs\/heads\// }}"
+          fi
+
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: chof64/og-chadfernandez-me:${{ github.ref == 'refs/heads/main' && 'latest' || replace('refs/heads/', '', github.ref) }}
+          tags: chof64/og-chadfernandez-me:${{ steps.tag.outputs.tag }}
