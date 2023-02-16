@@ -30,3 +30,4 @@ jobs:
           context: .
           push: true
           tags: chof64/og-chadfernandez-me:${{ github.ref == 'refs/heads/main' && 'latest' || 'latest-dev' }}
+          platforms: linux/amd64,linux/arm64
