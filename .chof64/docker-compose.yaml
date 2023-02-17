@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  app:
+    image: chof64/og-chadfernandez-me:latest
+    labels:
+      #! NETWORK
+      traefik.enable: true
+      traefik.docker.network: traefik-public
+      #! ROUTER
+      traefik.http.services.chof64-og-chadfernandez-me.loadbalancer.server.port: 3000
+      #? HTTP
+      traefik.http.routers.chof64-og-chadfernandez-me-http.entrypoints: http
+      traefik.http.routers.chof64-og-chadfernandez-me-http.rule: Host(`${CHOF64_OG_CHADFERNANDEZ_ME_80_DOMAIN?CHOF64_OG_CHADFERNANDEZ_ME_80_DOMAIN not set}`)
+      #? HTTPS
+      traefik.http.routers.chof64-og-chadfernandez-me-https.entrypoints: https
+      traefik.http.routers.chof64-og-chadfernandez-me-https.rule: Host(`${CHOF64_OG_CHADFERNANDEZ_ME_80_DOMAIN?CHOF64_OG_CHADFERNANDEZ_ME_80_DOMAIN not set}`)
+      #? SSL/TLS
+      traefik.http.routers.chof64-og-chadfernandez-me-https.tls: true
+      traefik.http.routers.chof64-og-chadfernandez-me-https.tls.certresolver: letsencrypt
+      #! MIDDLEWARE
+      #? REDIRECT HTTP TO HTTPS
+      traefik.http.routers.chof64-og-chadfernandez-me-http.middlewares: chof64-og-chadfernandez-me-redirect
+      traefik.http.middlewares.chof64-og-chadfernandez-me-redirect.redirectscheme.scheme: https
+      traefik.http.middlewares.chof64-og-chadfernandez-me-redirect.redirectscheme.permanent: true
+    networks:
+      - traefik-public
+    restart: "no"
+
+networks:
+  traefik-public:
+    external: true
